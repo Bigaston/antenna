@@ -37,6 +37,12 @@ const customGenerationFunction = () => {
         id = id + Math.round(Math.random()*9);
     }
 
+    id = id + "-";
+
+    for (i = 0; i < 3; i++) {
+        id = id + Math.round(Math.random()*9);
+    }
+
     return id;
 };
 

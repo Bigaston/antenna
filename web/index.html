@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Antenna, P2P T'Chat</title>
 
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     </head>
     <body>
-        <p>Votre id est :</p>
-        <p id="disp_id"></p>
+        <div class="wrapper">
+            <div id="connection_screen">
+                <h1>Antenna, P2P T'Chat</h1>
+                <p class="center">Connectez vous à une autre personne en partageant votre identifiant unique :</p>
+                <p id="disp_id"></p>
 
-        <div id="message_container"></div>
+                <p class="center">Ou entrez le code d'une autre personne pour vous y connecter</p>
+                
+                <input id="code_input" type="text" placeholder="000-000-000"/>
+                <button id="connect_btn" onclick="connect()">Se connecter</button> 
+            </div>
+    
+            <div id="message_screen">
+                <div id="message_container"></div>
 
-        <input id="username" type="text" placeholder="Nom d'utilisateur"/>
-        <button onclick="changeUsername()">Modifier</button>
+                <textarea id="mess"></textarea>
+            </div>
 
-        <input id="code_input" type="text" />
-        <button onclick="connect()">Se connecter</button> 
-
-        <textarea id="mess"></textarea>
-        <button onclick="envoyer()">Envoyer</button>
+            <div id="option_screen">
+                <input id="username" type="text" placeholder="Nom d'utilisateur"/>
+                <button onclick="changeUsername()">Modifier</button>
+            </div>
+        </div>
 
         <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
         <script src="/static/cryptico.js"></script>

@@ -3,6 +3,7 @@ var connection;
 let username = "";
 let other_username = "";
 
+// Génération des clés de chiffrement à partir d'une chaine random
 let keys = cryptico.generateRSAKey((Math.random().toString(36) + '0000000000000000000').substr(2, 16), 512);
 let other_public_key;
 
@@ -26,7 +27,7 @@ function connect() {
     let other_id = document.getElementById("code_input").value;
 
     var conn = peer.connect(other_id);
-    catchCo(conn)
+    catchCo(conn);
 }
 
 // Fonction s'executant quand la connection est effective
@@ -34,9 +35,10 @@ function catchCo(conn) {
     connection = conn;
 
     connection.on('open', function() {
-        let p = document.createElement("p");
-        p.innerHTML = "Connecté";
-        mess_container.appendChild(p)
+        // Changement d'écran
+        document.getElementById("connection_screen").style.display = "none";
+        document.getElementById("message_screen").style.display = "block";
+
 
         // Envoit de la clé publique
         let send_obj = {
@@ -61,6 +63,15 @@ function catchCo(conn) {
     });
 }
 
+document.getElementById("mess").addEventListener("keypress", (event) => {
+    var key = window.event.keyCode;
+
+    if (key === 13) {
+        event.preventDefault();
+        envoyer();
+    }
+})
+
 // Fonction pour envoyer un message
 function envoyer() {
     let textarea = document.getElementById("mess");
@@ -74,9 +85,7 @@ function envoyer() {
 
         send(send_obj);
 
-        let p = document.createElement("p");
-        p.innerHTML = myName() + ": " + textarea.value;
-        mess_container.appendChild(p)
+        displayMyMessage(textarea.value);
 
         textarea.value = "";
     }
@@ -88,9 +97,7 @@ function parseMessage(content) {
         content.data = cryptico.decrypt(content.data, keys).plaintext;
     }
 
-    let p = document.createElement("p");
-    p.innerHTML = otherName() + ": " + content.data;
-    mess_container.appendChild(p)
+    displayTheirMessage(content.data);
 }
 
 // Récupération d'une clé publique
@@ -99,6 +106,9 @@ function parseInit(content) {
 
     if (content.username) {
         other_username = content.username;
+        displayLog("Vous êtes connecté avec <b>" + other_username + "</b>");
+    } else {
+        displayLog("Vous êtes connecté");
     }
 }
 
@@ -129,10 +139,30 @@ function send(send_obj) {
     connection.send(encodeURI(JSON.stringify(send_obj)));
 }
 
-function otherName() {
-    return other_username != "" ? other_username : "Toi";
+function displayLog(text) {
+    let p = document.createElement("p");
+    p.classList.add("log");
+    p.innerHTML = text;
+
+    mess_container.appendChild(p);
 }
 
-function myName() {
-    return username != "" ? username : "Moi";
+function displayMyMessage(text) {
+    let name = username != "" ? username : "Moi";
+
+    let p = document.createElement("p");
+    p.classList.add("mymess");
+    p.innerHTML = "<span class='name'>" + name + ":</span> " + text;
+
+    mess_container.appendChild(p);
+}
+
+function displayTheirMessage(text) {
+    let name = other_username != "" ? other_username : "Toi";
+
+    let p = document.createElement("p");
+    p.classList.add("theirmess");
+    p.innerHTML = "<span class='name'>" + name + ":</span> " + text;
+
+    mess_container.appendChild(p);
 }

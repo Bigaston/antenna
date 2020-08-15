@@ -1,0 +1,105 @@
+@font-face {
+    font-family: 'Lato';
+    src: local('Lato Regular'), local('Lato-Regular'),
+        url('/static/Lato-Regular.woff2') format('woff2'),
+        url('/static/Lato-Regular.woff') format('woff'),
+        url('/static/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Lato';
+}
+
+h1 {
+    text-align: center;
+}
+
+.wrapper {
+    padding: 20px;
+    max-width: 600px;
+    margin-left: auto;
+	margin-right: auto;
+}
+
+.center {
+    text-align: center;
+}
+
+#disp_id {
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+    margin: 0px;
+}
+
+#code_input {
+    height: 20px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+}
+
+#connect_btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 5px;
+}
+
+#message_screen {
+    display: none;
+}
+
+/* Style des messages */
+#message_container {
+    display: block;
+    height: 400px;
+}
+
+#message_container .log {
+    text-align: center;
+    font-style: italic;
+    color: #839192;
+}
+
+#message_container .mymess {
+    text-align: left;
+    padding: 5px;
+    border-left: solid 3px #212F3D;
+    border-radius: 5px;
+}
+
+#message_container .theirmess {
+    text-align: right;
+    padding: 5px;
+    border-right: solid 3px #212F3D;
+    border-radius: 5px;
+}
+
+#message_container .name {
+    font-weight: bold;
+}
+
+#mess {
+    resize: none;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#option_screen {
+    display: none;
+    width: 500px;
+    padding: 10px;
+    z-index: 100;
+    position: absolute;
+    top: 30px;
+    left: auto;
+    right: auto;
+}
