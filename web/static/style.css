@@ -77,14 +77,14 @@ h2 {
 #message_container .mymess {
     text-align: left;
     padding: 5px;
-    border-left: solid 3px #212F3D;
+    border-left: solid 3px var(--mycolor);
     border-radius: 5px;
 }
 
 #message_container .theirmess {
     text-align: right;
     padding: 5px;
-    border-right: solid 3px #212F3D;
+    border-right: solid 3px var(--theircolor);
     border-radius: 5px;
 }
 

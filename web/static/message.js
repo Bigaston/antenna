@@ -3,7 +3,16 @@ var connection;
 let username = localStorage.getItem("username") == null ? "" : localStorage.getItem("username");
 let other_username = "";
 
+let color = localStorage.getItem("color") == null ? "#212F3D" : localStorage.getItem("color");
+let other_color = "#212F3D";
+
+console.log(color)
+
+mess_container.style.setProperty("--mycolor", color);
+mess_container.style.setProperty("--theircolor", other_color);
+
 document.getElementById("username").value = username;
+document.getElementById("color").value = color;
 
 // Génération des clés de chiffrement à partir d'une chaine random
 let keys = cryptico.generateRSAKey((Math.random().toString(36) + '0000000000000000000').substr(2, 16), 512);
@@ -46,7 +55,8 @@ function catchCo(conn) {
         let send_obj = {
             type: "init",
             public_key: cryptico.publicKeyString(keys),
-            username: username != "" ? username : undefined
+            username: username != "" ? username : undefined,
+            color: color
         }
 
         send(send_obj);
@@ -115,6 +125,8 @@ function parseMessage(content) {
 // Récupération d'une clé publique
 function parseInit(content) {
     other_public_key = content.public_key;
+    other_color = content.color;
+    mess_container.style.setProperty("--theircolor", other_color);
 
     if (content.username) {
         other_username = content.username;
@@ -131,6 +143,12 @@ function parseOption(content) {
     if (content.data.option_type == "username") {
         other_username = content.data.value;
         displayLog("<b>" + current_other_username + "</b> est devenu <b>" + other_username + "</b>")
+    }
+
+    if (content.data.option_type == "color") {
+        other_color = content.data.value;
+        mess_container.style.setProperty("--theircolor", other_color);
+        displayLog("<span style='color:" + other_color + "'>L'autre utilisateur a changé de couleur</span>")
     }
 }
 
@@ -188,6 +206,26 @@ function changeUsername() {
             data: {
                 option_type: "username",
                 value: username
+            }
+        }
+
+        send(send_obj);
+    }
+}
+
+function changeColor() {
+    color = document.getElementById("color").value;
+    localStorage.setItem("color", color);
+
+    mess_container.style.setProperty("--mycolor", color);
+    displayLog("<span style='color:" + color + "'>Vous changez de couleur</span>")
+
+    if (connection != undefined) {
+        let send_obj = {
+            type: "option",
+            data: {
+                option_type: "color",
+                value: color
             }
         }
 
