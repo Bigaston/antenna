@@ -53,10 +53,6 @@ let conf = {
 
 if (process.env.NODE_ENV == "prod") {
     conf.proxied = true;
-    conf.ssl = {
-        key: fs.readFileSync(process.env.PATH_KEY),
-        cert: fs.readFileSync(process.env.PATH_CERT)
-    }
 }
 
 const peerServer = ExpressPeerServer(serv, conf);
