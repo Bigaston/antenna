@@ -78,18 +78,20 @@ document.getElementById("mess").addEventListener("keypress", (event) => {
 function envoyer() {
     let textarea = document.getElementById("mess");
 
-    if (connection != undefined) {
-        let send_obj = {
-            type: "message",
-            data: other_public_key != undefined ? cryptico.encrypt(textarea.value, other_public_key).cipher : textarea.value,
-            encrypted: other_public_key != undefined
+    if (!!textarea.value) {
+        if (connection != undefined) {
+            let send_obj = {
+                type: "message",
+                data: other_public_key != undefined ? cryptico.encrypt(textarea.value, other_public_key).cipher : textarea.value,
+                encrypted: other_public_key != undefined
+            }
+    
+            send(send_obj);
+    
+            displayMyMessage(textarea.value);
+    
+            textarea.value = "";
         }
-
-        send(send_obj);
-
-        displayMyMessage(textarea.value);
-
-        textarea.value = "";
     }
 }
 
@@ -116,8 +118,11 @@ function parseInit(content) {
 
 // En cas de changement des options de l'autre user
 function parseOption(content) {
+    let current_other_username = other_username;
+
     if (content.data.option_type == "username") {
         other_username = content.data.value;
+        displayLog("<b>" + current_other_username + "</b> est devenu <b>" + other_username + "</b>")
     }
 }
 
@@ -131,6 +136,7 @@ function displayLog(text) {
     p.innerHTML = text;
 
     mess_container.appendChild(p);
+    mess_container.scrollTop = mess_container.scrollHeight;
 }
 
 function displayMyMessage(text) {
@@ -141,6 +147,7 @@ function displayMyMessage(text) {
     p.innerHTML = "<span class='name'>" + name + ":</span> " + text;
 
     mess_container.appendChild(p);
+    mess_container.scrollTop = mess_container.scrollHeight;
 }
 
 function displayTheirMessage(text) {
@@ -151,6 +158,7 @@ function displayTheirMessage(text) {
     p.innerHTML = "<span class='name'>" + name + ":</span> " + text;
 
     mess_container.appendChild(p);
+    mess_container.scrollTop = mess_container.scrollHeight;
 }
 
 // Options
@@ -163,6 +171,8 @@ document.getElementById("option_button").addEventListener("click", () => {
 function changeUsername() {
     username = document.getElementById("username").value;
     localStorage.setItem("username", username)
+
+    displayLog("Vous êtes maintenant <b>" + username + "</b>")
 
     if (connection != undefined) {
         let send_obj = {

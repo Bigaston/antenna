@@ -62,8 +62,10 @@ h2 {
 
 /* Style des messages */
 #message_container {
+    padding: 5px;
     display: block;
     height: 400px;
+    overflow-y: scroll;
 }
 
 #message_container .log {
