@@ -63,6 +63,14 @@ function catchCo(conn) {
             }
         });
     });
+
+    connection.on("close", function(args) {
+        if (other_username == "") {
+            displayLog("L'autre utilisateur s'est déconnecté")
+        } else {
+            displayLog("<b>" + other_username + "</b> s'est déconnecté")
+        }
+    })
 }
 
 document.getElementById("mess").addEventListener("keypress", (event) => {
