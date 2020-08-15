@@ -1,6 +1,9 @@
 let mess_container = document.getElementById("message_container");
 var connection;
 
+let keys = cryptico.generateRSAKey((Math.random().toString(36) + '0000000000000000000').substr(2, 16), 512);
+let other_public_key;
+
 // Création de l'instance de Peer
 var peer = new Peer(undefined, {
     host: "/",
@@ -33,13 +36,20 @@ function catchCo(conn) {
         p.innerHTML = "Connecté";
         mess_container.appendChild(p)
 
-        connection.on('data', function(data) {
-            console.log(data)
+        let send_obj = {
+            type: "public_key",
+            data: cryptico.publicKeyString(keys)
+        }
 
+        connection.send(encodeURI(JSON.stringify(send_obj)));
+
+        connection.on('data', function(data) {
             let content = JSON.parse(decodeURI(data))
 
             if (content.type == "message") {
                 parseMessage(content);
+            } else if (content.type == "public_key") {
+                parseKey(content);
             }
         });
     });
@@ -52,7 +62,8 @@ function envoyer() {
     if (connection != undefined) {
         let send_obj = {
             type: "message",
-            data: textarea.value
+            data: other_public_key != undefined ? cryptico.encrypt(textarea.value, other_public_key).cipher : textarea.value,
+            encrypted: other_public_key != undefined
         }
 
         connection.send(encodeURI(JSON.stringify(send_obj)));
@@ -64,8 +75,18 @@ function envoyer() {
     }
 }
 
+// Si le signal est un message
 function parseMessage(content) {
+    if (content.encrypted) {
+        content.data = cryptico.decrypt(content.data, keys).plaintext;
+    }
+
     let p = document.createElement("p");
     p.innerHTML = "Toi: " + content.data;
     mess_container.appendChild(p)
+}
+
+// Récupération d'une clé publique
+function parseKey(content) {
+    other_public_key = content.data;
 }
