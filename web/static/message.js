@@ -1,7 +1,9 @@
 let mess_container = document.getElementById("message_container");
 var connection;
-let username = "";
+let username = localStorage.getItem("username") == null ? "" : localStorage.getItem("username");
 let other_username = "";
+
+document.getElementById("username").value = username;
 
 // Génération des clés de chiffrement à partir d'une chaine random
 let keys = cryptico.generateRSAKey((Math.random().toString(36) + '0000000000000000000').substr(2, 16), 512);
@@ -119,22 +121,6 @@ function parseOption(content) {
     }
 }
 
-function changeUsername() {
-    username = document.getElementById("username").value;
-
-    if (connection != undefined) {
-        let send_obj = {
-            type: "option",
-            data: {
-                option_type: "username",
-                value: username
-            }
-        }
-
-        send(send_obj);
-    }
-}
-
 function send(send_obj) {
     connection.send(encodeURI(JSON.stringify(send_obj)));
 }
@@ -165,4 +151,28 @@ function displayTheirMessage(text) {
     p.innerHTML = "<span class='name'>" + name + ":</span> " + text;
 
     mess_container.appendChild(p);
+}
+
+// Options
+document.getElementById("option_button").addEventListener("click", () => {
+    let option_div = document.getElementById("option_screen");
+
+    option_div.style.display = option_div.style.display == "none" ? "block" : "none";
+})
+
+function changeUsername() {
+    username = document.getElementById("username").value;
+    localStorage.setItem("username", username)
+
+    if (connection != undefined) {
+        let send_obj = {
+            type: "option",
+            data: {
+                option_type: "username",
+                value: username
+            }
+        }
+
+        send(send_obj);
+    }
 }

@@ -17,6 +17,11 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    text-align: center;
+    margin-top: 5px;
+}
+
 .wrapper {
     padding: 20px;
     max-width: 600px;
@@ -94,7 +99,6 @@ h1 {
 }
 
 #option_screen {
-    display: none;
     width: 500px;
     padding: 10px;
     z-index: 100;
@@ -102,4 +106,19 @@ h1 {
     top: 30px;
     left: auto;
     right: auto;
+    background-color: white;
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+#option_button {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#option_button:hover {
+    cursor: pointer;
 }
