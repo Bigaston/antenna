@@ -22,7 +22,8 @@ let other_public_key;
 var peer = new Peer(undefined, {
     host: "/",
     port: 4937,
-    path: "/peerjs/antenna"
+    path: "/peerjs/antenna",
+    secure: true
 });
 
 // Autentification auprès du serveur et récupération de l'ID

@@ -46,9 +46,19 @@ const customGenerationFunction = () => {
     return id;
 };
 
-const peerServer = ExpressPeerServer(serv, {
+let conf = {
     path: '/antenna',
     generateClientId: customGenerationFunction
-});
+}
+
+if (process.env.NODE_ENV == "prod") {
+    conf.proxied = true;
+    conf.ssl = {
+        key: fs.readFileSync(process.env.PATH_KEY),
+        cert: fs.readFileSync(process.env.PATH_CERT)
+    }
+}
+
+const peerServer = ExpressPeerServer(serv, conf);
 
 app.use('/peerjs', peerServer);

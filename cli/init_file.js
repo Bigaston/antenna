@@ -6,6 +6,9 @@ console.log("Création des fichiers de base")
 if (!fs.existsSync(path.join(__dirname, "../.env"))) {
     fs.writeFileSync(path.join(__dirname, "../.env"), `
 PORT=4937
+PATH_CERT=
+PATH_KEY=
+NODE_ENV=dev
 `)
 }
 
