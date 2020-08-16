@@ -43,6 +43,10 @@ function connect() {
 
 // Fonction s'executant quand la connection est effective
 function catchCo(conn) {
+    if (connection != undefined) {
+        return;
+    }
+    
     connection = conn;
 
     connection.on('open', function() {
